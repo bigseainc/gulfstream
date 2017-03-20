@@ -1,0 +1,90 @@
+{% macro input(name, value, type, id, class, required, extraAttributes) %}
+  <input type="{{ type|default('text') }}" name="{{ name }}" id="{{ id|default(name) }}" value="{{ value|e }}" class="{{ class }}" {% if required %} required {% endif %} {{ extraAttributes }} />
+{% endmacro %}
+
+{% macro buttonForm(label, dest, method, classes, hiddenvars) %}
+    {% set method = method|default('GET')|upper %}
+    {% if method not in ['GET', 'POST'] %}
+        {% set alt_method = method %}
+        {% set method = 'POST' %}
+    {% endif %}
+    {% spaceless %}
+    <form action="{{ dest }}" method="{{ method }}">
+        {% if alt_method %}<input type="hidden" name="_METHOD" value="{{ alt_method }}">{% endif %}
+        <button class="btn{% for class in classes|default(['btn-primary']) %} {{ class }}{% endfor %}">{{ label|default('Button') }}</button>
+        {% for name, val in hiddenvars %}
+            <input type="hidden" name="{{ name }}" value="{{ val }}">
+        {% endfor %}
+    </form>
+    {% endspaceless %}
+{% endmacro %}
+
+{% macro label(id, content, class) %}
+  <label for="{{ id }}" class="{{ class }}">{{ content|e }}</label>
+{% endmacro %}
+
+{% macro button(verb, type) %}
+    {% import _self as forms %}
+    <div class="form-group">
+        <button class="btn btn-{{ type|default('primary') }}">{{ verb|default('Submit') }}</button>
+    </div>
+{% endmacro %}
+
+{% macro inputRow(label, name, value, type, id, required, extraAttributes) %}
+    {% import _self as forms %}
+    <div class="form-group">
+        {{ forms.label(id|default(name), label, 'control-label') }}
+        {{ forms.input(name, value, type, id, 'form-control', required, extraAttributes) }}
+    </div>
+{% endmacro %}
+
+{% macro textarea(name, value, id, class) %}
+  <textarea name="{{ name }}" id="{{ id|default(name) }}" class="{{ class }}">{{ value|e }}</textarea>
+{% endmacro %}
+
+{% macro textareaRow(label, name, value, id, class) %}
+  <div class="form-group">
+    <label for="{{ id|default(name) }}"> {{ label }}</label>
+    <p><textarea name="{{ name }}" id="{{ id|default(name) }}" class="{{ class }}">{{ value|e }}</textarea></p>
+  </div>
+{% endmacro %}
+
+{% macro checkbox(name, value, id, class) %}
+  <input type="checkbox" name="{{ name }}" id="{{ id|default(name) }}" class="{{ class }}" value="1"{% if value %} checked="checked"{% endif %} />
+{% endmacro %}
+
+{% macro multiSelect(label, name, values, selected, id, class) %}
+  <div class="form-group">
+    <label for="{{ id|default(name) }}"> {{ label }}</label>
+    <select multiple="multiple" name="{{ name }}" id="{{ id|default(name) }}" class="{{ class }} form-control">
+      {% for name in values %}
+      <option value="{{ name }}"{% if name in selected %} selected="selected"{% endif %}>{{ name }}</option>
+      {% endfor %}
+    </select>
+  </div>
+{% endmacro %}
+
+{% macro select(label, name, values, value, id, class) %}
+  <div class="form-group">
+    <label for="{{ id|default(name) }}"> {{ label }}</label>
+    <select name="{{ name }}" id="{{ id|default(name) }}" class="{{ class }}">
+      {% for key, name in values %}
+      <option value="{{ key }}"{% if value == key %} selected="selected"{% endif %}>{{ name }}</option>
+      {% endfor %}
+    </select>
+  </div>
+{% endmacro %}
+
+{% macro radio(name, values, value, id, class) %}
+  {% for key, label in values %}
+  <label{% if value == key %} class="selected"{% endif %} ><input type="radio" name="{{ name }}" id="{{ id|default(name) ~ key }}" value="{{ key }}"{% if value == key %} checked="checked"{% endif %} /> {{ label }}</label>
+  {% endfor %}
+{% endmacro %}
+
+{% macro radioRow(label, name, values, value, id, class) %}
+    {% import _self as forms %}
+    <div class="form-group">
+        {{ forms.label(id|default(name), label, 'control-label') }}
+        {{ forms.radio(name, values, value, id, 'form-control') }}
+    </div>
+{% endmacro %}

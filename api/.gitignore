@@ -1,0 +1,3 @@
+# API General
+/cache/*
+!/cache/.gitkeep

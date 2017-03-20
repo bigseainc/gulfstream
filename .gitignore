@@ -1,0 +1,11 @@
+# System Files
+.DS_Store
+.sass-cache
+node_modules
+composer.lock
+
+# Project General
+/vendor/*
+
+# Server Specific
+.env

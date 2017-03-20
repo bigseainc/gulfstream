@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        {% block head %}
+            <meta http-equiv="content-type" content="text/html; charset=utf-8">
+            <title>{% block title %}{% endblock %} Gulfstream Admin</title>
+            <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+            <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.11.0/bootstrap-table.min.css">
+            <link rel="stylesheet" href="/css/chosen.min.css" type="text/css" media="screen" charset="utf-8">
+            <link rel="stylesheet" href="/css/chosen-bootstrap.css" type="text/css" media="screen" charset="utf-8">
+            <link rel="stylesheet" href="/css/site.css" type="text/css" media="screen" charset="utf-8">
+        {% endblock %}
+    </head>
+    <body>
+        <nav class="navbar navbar-default navbar-fixed-top">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <a class="navbar-brand" href="/">Gulfstream Admin</a>
+                </div>
+            </div>
+        </nav>
+
+        <ul class="nav nav-tabs">
+            <li role="presentation" {% if url_segment(1) == '' %}class="active"{% endif %}><a href="/">Projects</a></li>
+            <li role="presentation" {% if url_segment(1) == 'people' %}class="active"{% endif %}><a href="/people">Team Members</a></li>
+            <li role="presentation" {% if url_segment(1) == 'departments' %}class="active"{% endif %}><a href="/departments">Departments</a></li>
+            <li role="presentation" {% if url_segment(1) == 'project-types' %}class="active"{% endif %}><a href="/project-types">Project Types</a></li>
+            <li role="presentation" {% if url_segment(1) == 'settings' %}class="active"{% endif %}><a href="/settings">Settings</a></li>
+        </ul>
+
+        <div id="content" class="container">
+            <div class="container-fluid">
+                {% if messages %}
+                    {% for type, messageArray in messages %}
+                        {% for message in messageArray %}
+                            <p class="alert alert-{{ type }}">{{ message }}</p>
+                        {% endfor %}
+                    {% endfor %}
+                {% endif %}
+            </div>
+
+            {% block content %}
+                Content not set for this page.
+            {% endblock %}
+        </div>
+
+        <section class="footer container-fluid">
+            <p class="center text-center">Woohoo.</p>
+        </section>
+
+        {% block footer_scripts %}
+            <script src="//code.jquery.com/jquery-3.1.0.min.js" integrity="sha256-cCueBR6CsyA4/9szpPfrX3s49M9vUU5BgtiJj06wt/s=" crossorigin="anonymous"></script>
+            <script src="/js/chosen.jquery.min.js"></script>
+            <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+            <script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.11.0/bootstrap-table.min.js"></script>
+            <script src="/js/jquery.bootstrap-wysiwyg.js"></script>
+            <script>
+                jQuery(document).ready(function($) {
+                    $(".wysiwyg-editor").wysiwyg();
+                    $(".chosen-select").chosen();
+
+                    $('.confirmCheck').on('click', function(e) {
+                        var result = confirm('Are you sure you want to do this?');
+
+                        if (!result) {
+                            e.preventDefault();
+                            e.stopPropagation();
+                        }
+                    });
+                });
+            </script>
+        {% endblock %}
+
+        <script>
+            {% block pageSpecificScripts %}
+            {% endblock %}
+        </script>
+    </body>
+</html>

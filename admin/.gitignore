@@ -1,0 +1,11 @@
+# System Files
+.DS_Store
+.sass-cache
+node_modules
+
+# Project General
+/vendor/*
+/logs/*
+!/logs/.gitkeep
+/cache/*
+!/cache/.gitkeep
